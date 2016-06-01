@@ -1,0 +1,22 @@
+{
+    "questions": [
+        {
+            "id": "avatar",
+            "type": "image",
+            "prompt": "Enter a publicly accessible URL to be your profile picture: ",
+            "verify": "Does this look correct (y/n)? "
+        },
+        {
+            "id": "username",
+            "type": "linux_user",
+            "prompt": "Enter your desired username: "
+        },
+        {
+            "id": "password",
+            "type": "secret",
+            "prompt": "Enter your password: ",
+            "verify": "And again: "
+        }
+    ],
+    "greeting": "Hello Sample Text!"
+}
