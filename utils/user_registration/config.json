@@ -17,6 +17,7 @@
         {
             "id": "avatar",
             "type": "image",
+            "error": "Could not fetch the image!",
             "prompt": "Enter a publicly accessible URL to be your profile picture: ",
             "verify": "Does this look correct (y/n)? "
         }
