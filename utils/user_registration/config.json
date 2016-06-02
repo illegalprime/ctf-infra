@@ -1,6 +1,13 @@
 {
     "questions": [
         {
+            "id": "username",
+            "type": "linux_user",
+            "taken": "Sorry, that username is already taken!",
+            "invalid": "A username must match the regex: [a-z_][a-z0-9_]{0,30}",
+            "prompt": "Enter your desired username: "
+        },
+        {
             "id": "password",
             "type": "secret",
             "error": "Your passwords don't match!",
@@ -12,11 +19,6 @@
             "type": "image",
             "prompt": "Enter a publicly accessible URL to be your profile picture: ",
             "verify": "Does this look correct (y/n)? "
-        },
-        {
-            "id": "username",
-            "type": "linux_user",
-            "prompt": "Enter your desired username: "
         }
     ],
     "greeting": "Hello Sample Text!"

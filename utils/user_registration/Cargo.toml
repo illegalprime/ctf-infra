@@ -4,5 +4,7 @@ version = "0.1.0"
 authors = ["Michael Eden <themichaeleden@gmail.com>"]
 
 [dependencies]
+users = "0.5.1"
+regex = "0.1.71"
 rpassword = "0.2.2"
 serde_json = "0.7.1"
