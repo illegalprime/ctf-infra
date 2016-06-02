@@ -1,6 +1,13 @@
 {
     "questions": [
         {
+            "id": "password",
+            "type": "secret",
+            "error": "Your passwords don't match!",
+            "prompt": "Enter your password: ",
+            "verify": "And again: "
+        },
+        {
             "id": "avatar",
             "type": "image",
             "prompt": "Enter a publicly accessible URL to be your profile picture: ",
@@ -10,12 +17,6 @@
             "id": "username",
             "type": "linux_user",
             "prompt": "Enter your desired username: "
-        },
-        {
-            "id": "password",
-            "type": "secret",
-            "prompt": "Enter your password: ",
-            "verify": "And again: "
         }
     ],
     "greeting": "Hello Sample Text!"
