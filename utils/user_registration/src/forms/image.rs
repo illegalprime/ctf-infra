@@ -10,7 +10,11 @@ use std::io::{
     Write,
 };
 use std::process::Command;
-use std::fs::File;
+use std::error::Error;
+use std::fs::{
+    self,
+    File,
+};
 
 pub struct Handler;
 
@@ -31,17 +35,18 @@ impl Interactive for Handler {
             let url = url.trim();
 
             if let Ok(preview) = preview_image(url) {
-                println!("{}", preview);
+                print!("{}", preview);
+                io::stdout().flush().unwrap();
             } else {
                 println!("{} ('{}')", error, url);
             }
-            println!("{}", verify);
+            print!("{}", verify);
             io::stdout().flush().unwrap();
 
             let mut response = String::new();
             io::stdin().read_line(&mut response).unwrap();
 
-            match response.chars().next().and_then(|c| c.to_lowercase().next()) {
+            match response.trim().chars().next().and_then(|c| c.to_lowercase().next()) {
                 Some(c) if c == 'y' => return Value::String(url.to_string()),
                 _ => continue,
             };
@@ -51,27 +56,45 @@ impl Interactive for Handler {
 
 fn preview_image(url: &str) -> Result<String, &'static str> {
     // Make a file to hold the image
-    let image_path = format!("/tmp/{}", url);
+    let image_path = format!("/tmp/user_register_{}", url.replace("/", "_"));
+
+    let cleanup = || {
+        fs::remove_file(&image_path).ok();
+    };
 
     // Get the image
     {
-        let mut image = File::create(&image_path).unwrap();
+        let mut image = File::create(&image_path)
+            .expect("Could not create temporary profile pic file");
+
         let mut fetch = Easy::new();
+
         if fetch.url(url).is_err() {
+            cleanup();
             return Err("Not a valid URL");
         }
+
         fetch.write_function(move |data| {
-            Ok(image.write(data).unwrap())
-        }).unwrap();
-        fetch.perform().unwrap();
+            Ok(image.write(data).expect("Could not write to pic file"))
+        })
+        .expect("Could not set write function of curl.");
+
+        if let Err(e) = fetch.perform() {
+            cleanup();
+            println!("{}", e.description());
+            return Err("Could not fetch the image.");
+        }
     }
 
     let output = Command::new("img2txt")
         .arg(&image_path)
         .output()
-        .unwrap();
+        .expect("Could not get output from img2txt");
 
-    let text = String::from_utf8_lossy(&output.stdout[..]);
+    cleanup();
 
-    Ok(text.into_owned())
+    let text = String::from_utf8(output.stdout)
+        .expect("img2txt emitted non utf8 data!");
+
+    Ok(text)
 }
