@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Michael Eden <themichaeleden@gmail.com>"]
 
 [dependencies]
+curl = "0.3.0"
 users = "0.5.1"
 regex = "0.1.71"
 rpassword = "0.2.2"
