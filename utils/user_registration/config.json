@@ -22,5 +22,6 @@
             "verify": "Does this look correct (y/n)? "
         }
     ],
+    "port": 1234,
     "greeting": "Hello Sample Text!"
 }

@@ -5,6 +5,8 @@ mod forms;
 use serde_json::Value;
 use std::collections::BTreeMap;
 use forms::Interactive;
+use std::net::TcpStream;
+use std::io::Write;
 
 pub type Object = BTreeMap<String, Value>;
 
@@ -31,13 +33,35 @@ fn main() {
         println!("{}", greet_text);
     }
 
+    let mut response = BTreeMap::new();
+
     for question in questions.iter() {
-        (match question.get("type").and_then(Value::as_string) {
+        let val = (match question.get("type").and_then(Value::as_string) {
             Some("image") => forms::image::Handler::interact,
             Some("linux_user") => forms::linux_user::Handler::interact,
             Some("secret") => forms::secret::Handler::interact,
             Some(t) => panic!("Question type '{}' is not a valid type", t),
             None => panic!("each question must contain a `type` field"),
         })(question);
+
+        let id = question.get("id").and_then(Value::as_string)
+            .expect("each question must have an id associated with it");
+
+        response.insert(id, val);
     }
+
+    let response = serde_json::to_string_pretty(&response).unwrap();
+
+    let port = config.get("port").and_then(Value::as_u64)
+        .expect("you must specify a port number to send your response to");
+
+    if port > 65535 {
+        panic!("your port number must be lower than 65535");
+    }
+
+    let mut connection = TcpStream::connect(("127.0.0.1", port as u16))
+        .expect("Could not connect to the specified port");
+
+    connection.write_all(response.as_bytes())
+        .expect("Could not write data to socket");
 }
