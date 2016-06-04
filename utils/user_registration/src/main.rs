@@ -67,6 +67,8 @@ fn main() {
         panic!("your port number must be lower than 65535");
     }
 
+    println!("Please wait. Sending data to server...");
+
     let mut connection = TcpStream::connect(("127.0.0.1", port as u16))
         .expect("Could not connect to the specified port");
 

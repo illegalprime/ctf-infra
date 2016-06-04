@@ -34,22 +34,28 @@ impl Interactive for Handler {
             io::stdin().read_line(&mut url).unwrap();
             let url = url.trim();
 
+            println!("Please wait. Fetching image preview....");
+
             if let Ok(preview) = preview_image(url) {
                 print!("{}", preview);
                 io::stdout().flush().unwrap();
             } else {
                 println!("{} ('{}')", error, url);
             }
-            print!("{}", verify);
-            io::stdout().flush().unwrap();
 
-            let mut response = String::new();
-            io::stdin().read_line(&mut response).unwrap();
+            // Keep trying until we get an explicit yes or no
+            loop  {
+                print!("{}", verify);
+                io::stdout().flush().unwrap();
 
-            match response.trim().chars().next().and_then(|c| c.to_lowercase().next()) {
-                Some(c) if c == 'y' => return Value::String(url.to_string()),
-                _ => continue,
-            };
+                let mut response = String::new();
+                io::stdin().read_line(&mut response).unwrap();
+                match response.trim().chars().next().and_then(|c| c.to_lowercase().next()) {
+                    Some(c) if c == 'y' => return Value::String(url.to_string()),
+                    Some(c) if c == 'n' => break,
+                    _ => continue,
+                };
+            }
         }
     }
 }
