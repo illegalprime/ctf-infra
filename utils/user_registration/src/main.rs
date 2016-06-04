@@ -36,13 +36,18 @@ fn main() {
     let mut response = BTreeMap::new();
 
     for question in questions.iter() {
-        let val = (match question.get("type").and_then(Value::as_string) {
-            Some("image") => forms::image::Handler::interact,
-            Some("linux_user") => forms::linux_user::Handler::interact,
-            Some("secret") => forms::secret::Handler::interact,
+        let val = match question.get("type").and_then(Value::as_string) {
+            Some("image") => forms::image::Handler::interact(question),
+            Some("linux_user") => forms::linux_user::Handler::interact(question),
+            Some("secret") => forms::secret::Handler::interact(question),
+            Some("meta") => {
+                let meta = question.get("value").and_then(Value::as_string)
+                    .expect("meta must also have 'value' field");
+                Value::String(meta.to_string())
+            },
             Some(t) => panic!("Question type '{}' is not a valid type", t),
             None => panic!("each question must contain a `type` field"),
-        })(question);
+        };
 
         let id = question.get("id").and_then(Value::as_string)
             .expect("each question must have an id associated with it");

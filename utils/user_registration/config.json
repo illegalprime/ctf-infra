@@ -1,6 +1,11 @@
 {
     "questions": [
         {
+            "id": "action",
+            "type": "meta",
+            "value": "add_user"
+        },
+        {
             "id": "username",
             "type": "linux_user",
             "taken": "Sorry, that username is already taken!",
