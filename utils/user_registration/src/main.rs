@@ -58,7 +58,7 @@ fn main() {
         response.insert(id, val);
     }
 
-    let response = serde_json::to_string_pretty(&response).unwrap();
+    let response = serde_json::to_string(&response).unwrap();
 
     let port = config.get("port").and_then(Value::as_u64)
         .expect("you must specify a port number to send your response to");
@@ -72,6 +72,9 @@ fn main() {
 
     connection.write_all(response.as_bytes())
         .expect("Could not write data to socket");
+    connection.write("\n".as_bytes())
+        .expect("Could not write data to socket");
+    connection.flush().ok();
 
     let mut reply = Vec::new();
     connection.read_to_end(&mut reply).ok();
