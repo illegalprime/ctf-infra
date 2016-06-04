@@ -6,7 +6,10 @@ use serde_json::Value;
 use std::collections::BTreeMap;
 use forms::Interactive;
 use std::net::TcpStream;
-use std::io::Write;
+use std::io::{
+    Write,
+    Read,
+};
 
 pub type Object = BTreeMap<String, Value>;
 
@@ -69,4 +72,27 @@ fn main() {
 
     connection.write_all(response.as_bytes())
         .expect("Could not write data to socket");
+
+    let mut reply = Vec::new();
+    connection.read_to_end(&mut reply).ok();
+    let reply = String::from_utf8(reply)
+        .expect("Got non UTF-8 reply from the server!");
+    let reply: Value = serde_json::from_str(&reply)
+        .expect("got invalid JSON from server");
+    let reply = reply.as_object()
+        .expect("server reply must be object");
+
+    match reply.get("status").and_then(Value::as_string) {
+        Some("error") => {
+            let description = reply.get("error").and_then(Value::as_string)
+                .expect("expected an error description from the server");
+            println!("Error from server: {}", description);
+        },
+        Some("ok") => {
+            if let Some(farewell) = config.get("farewell").and_then(Value::as_string) {
+                println!("{}", farewell);
+            }
+        },
+        _ => panic!("invalid status from server"),
+    };
 }

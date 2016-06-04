@@ -28,5 +28,6 @@
         }
     ],
     "port": 1234,
+    "farewell": "Congrats you're registered! To begin ssh with your username! :D",
     "greeting": "Hello Sample Text!"
 }
