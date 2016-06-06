@@ -1,0 +1,12 @@
+[package]
+name = "flagclient"
+version = "0.1.0"
+authors = ["Michael Eden <themichaeleden@gmail.com>"]
+
+[dependencies]
+wire = "*"
+docopt = "*"
+rustc-serialize = "*"
+
+[dependencies.ctfcommon]
+path = "../ctfcommon"
