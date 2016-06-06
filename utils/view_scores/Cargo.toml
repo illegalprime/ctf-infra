@@ -1,6 +1,0 @@
-[package]
-name = "view_scores"
-version = "0.1.0"
-authors = ["Michael Eden <themichaeleden@gmail.com>"]
-
-[dependencies]
