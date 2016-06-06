@@ -1,0 +1,7 @@
+[package]
+name = "ctfcommon"
+version = "0.1.0"
+authors = ["Michael Eden <themichaeleden@gmail.com>"]
+
+[dependencies]
+rustc-serialize = "*"
