@@ -20,11 +20,12 @@ window.onload = () => {
     engine.camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     const text = new Typewriter({
+        text: "Illuminati Δ",
         font: DroidMono,
         size: 70,
         height: 20,
         curveSegments: 4,
-        speed: 200,
+        speed: 5,
         color: {
             font: 0x00ff00,
             font_side: 0x009900,
@@ -32,8 +33,8 @@ window.onload = () => {
     });
 
     // Get the middle of the text to offset.
-    text.geometry.computeBoundingBox();
-    const text_bb = text.geometry.boundingBox;
+    text.final_geometry.computeBoundingBox();
+    const text_bb = text.final_geometry.boundingBox;
     const middle = -0.5 * (text_bb.max.x - text_bb.min.x);
 
     // Position and rotate to face us.
