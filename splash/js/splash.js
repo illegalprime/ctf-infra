@@ -1,6 +1,7 @@
 import Cube from "./cube.js";
 import Renderer from "./renderer.js";
 import Typewriter from "./typewriter.js";
+import GlitchPass from "../lib/postprocessing/GlitchPass.js";
 import * as ComicSans from "../assets/fonts/comic_sans_regular.json";
 import THREE from "three";
 
@@ -31,6 +32,10 @@ window.onload = () => {
             font: 0x00ff00,
             font_side: 0x009900,
         },
+        cursor: {
+            text: "_",
+            speed: 20,
+        },
     });
 
     // Get the middle of the text to offset.
@@ -46,5 +51,9 @@ window.onload = () => {
     text.mesh.rotation.y = Math.PI * 2;
 
     engine.add(text);
+
+    const glitchPass = new GlitchPass();
+    glitchPass.renderToScreen = true;
+    engine.composer.addPass(glitchPass);
 };
 
