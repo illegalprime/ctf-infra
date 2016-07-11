@@ -3,6 +3,9 @@ import THREE from "three";
 class Typewriter {
     constructor(opts) {
         this.text = opts.text || "Sample text.";
+        this.cursor = opts.cursor || {};
+        this.cursor.text = this.cursor.text || "|";
+        this.cursor.speed = this.cursor.speed || 20;
         this.mesh = new THREE.Object3D();
 
         this.make_text = (text) => {
@@ -31,7 +34,7 @@ class Typewriter {
         ]);
 
         this.geometry = this.make_text("");
-        this.final_geometry = this.make_text(this.text);
+        this.final_geometry = this.make_text(this.text + this.cursor.text);
         this.text_mesh = new THREE.Mesh(this.geometry, this.material);
 
         this.mesh.add(this.text_mesh);
@@ -41,11 +44,10 @@ class Typewriter {
         this.speed = opts.speed || 200;
     }
 
-    type_more() {
+    type_more(portion, cursor_visible) {
         // Add one more letter
-        this.progress += 1;
-        if (this.progress > this.text.length) {
-            return;
+        if (portion > this.text.length) {
+            portion = this.text.length;
         }
 
         // Cleanup old mesh
@@ -53,7 +55,10 @@ class Typewriter {
         this.text_mesh.geometry.dispose();
 
         // Create new mesh
-        const current_text = this.text.substr(0, this.progress);
+        let current_text = this.text.substr(0, portion);
+        if (cursor_visible) {
+            current_text += this.cursor.text;
+        }
         this.geometry = this.make_text(current_text);
         this.text_mesh = new THREE.Mesh(this.geometry, this.material);
 
@@ -65,9 +70,13 @@ class Typewriter {
         if (this.progress == 0) {
             this.start_time = global.ticks;
         }
-        if ((global.ticks - this.start_time) % this.speed == 0) {
-            this.type_more();
+        if ((global.ticks - this.start_time) % this.cursor.speed == 0) {
+            this.cursor_visible = !this.cursor_visible;
         }
+        if ((global.ticks - this.start_time) % this.speed == 0) {
+            this.progress += 1;
+        }
+        this.type_more(this.progress, this.cursor_visible);
     }
 }
 
