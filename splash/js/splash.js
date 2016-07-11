@@ -1,7 +1,7 @@
 import Cube from "./cube.js";
 import Renderer from "./renderer.js";
 import Typewriter from "./typewriter.js";
-import * as DroidMono from "../assets/droid_sans_mono_regular.typeface.json";
+import * as ComicSans from "../assets/fonts/comic_sans_regular.json";
 import THREE from "three";
 
 window.onload = () => {
@@ -22,7 +22,7 @@ window.onload = () => {
 
     const text = new Typewriter({
         text: "Sample Text",
-        font: DroidMono,
+        font: ComicSans,
         size: 70,
         height: 20,
         curveSegments: 4,
