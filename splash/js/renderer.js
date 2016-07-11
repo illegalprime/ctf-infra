@@ -37,7 +37,6 @@ class Renderer {
         this.state = {
             ticks: 0,
         };
-        this.render();
 
         // Manage resizing
         window.addEventListener("resize", () => {

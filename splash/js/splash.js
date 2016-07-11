@@ -18,9 +18,10 @@ window.onload = () => {
 
     engine.camera.position.set(0, 0, 1000);
     engine.camera.lookAt(new THREE.Vector3(0, 0, 0));
+    engine.render();
 
     const text = new Typewriter({
-        text: "Illuminati Δ",
+        text: "Sample Text",
         font: DroidMono,
         size: 70,
         height: 20,
