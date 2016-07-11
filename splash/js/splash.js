@@ -14,6 +14,7 @@ window.onload = () => {
             near: 0.1,
             far: 1000,
         },
+        debug: true,
     });
 
     engine.camera.position.z = 5;
@@ -23,10 +24,7 @@ window.onload = () => {
         height: 1,
         depth: 1,
         color: 0xff0000,
-        update: (mesh) => {
-            mesh.rotation.x += 0.01;
-            mesh.rotation.y += 0.01;
-        },
+        update: () => {},
     });
 
     const text = new Typewriter({
