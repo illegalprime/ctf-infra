@@ -4,7 +4,7 @@ class Typewriter {
     constructor(opts) {
         this.text = opts.text || "Sample text.";
 
-        this.geometry = new THREE.TextGeometry("Some Text", {
+        this.geometry = new THREE.TextGeometry(this.text, {
             font: new THREE.Font(opts.font),
             size: opts.size,
             height: opts.height,
@@ -13,23 +13,19 @@ class Typewriter {
             extrudeMaterial: 1,
         });
 
-        this.material = new THREE.MeshPhongMaterial({
-            color: 0xdddddd
-        });
+        this.material = new THREE.MultiMaterial([
+            // Font face material
+            new THREE.MeshBasicMaterial({
+                color: opts.color.font,
+                shading: THREE.FlatShading,
+            }),
 
-        // this.material = new THREE.MultiMaterial([
-        //     // Font face material
-        //     new THREE.MeshBasicMaterial({
-        //         color: opts.color.font,
-        //         shading: THREE.FlatShading,
-        //     }),
-
-        //     // Side of font material
-        //     new THREE.MeshBasicMaterial({
-        //         color: opts.color.font_side || opts.color.font,
-        //         shading: THREE.SmoothShading,
-        //     }),
-        // ]);
+            // Side of font material
+            new THREE.MeshBasicMaterial({
+                color: opts.color.font_side || opts.color.font,
+                shading: THREE.SmoothShading,
+            }),
+        ]);
 
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
