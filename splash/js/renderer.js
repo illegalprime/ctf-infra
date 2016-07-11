@@ -14,7 +14,6 @@ class Renderer {
             opts.camera.far || 1000
         );
 
-
         if (opts.debug) {
             // When debugging is on, allow trackball controls
             this.debug = opts.debug;
