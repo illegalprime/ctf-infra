@@ -8,7 +8,9 @@ class Renderer {
     constructor(opts) {
         // Create scene
         this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({
+            antialias: !! opts.antialias,
+        });
         this.camera = new THREE.PerspectiveCamera(
             opts.camera.fov || 75,
             window.innerWidth / window.innerHeight,
