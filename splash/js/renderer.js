@@ -32,6 +32,11 @@ class Renderer {
 
         // Append to DOM
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.domElement.style.position = "absolute";
+        this.renderer.domElement.style.top = "0px";
+        this.renderer.domElement.style.bottom = "0px";
+        this.renderer.domElement.style.left = "0px";
+        this.renderer.domElement.style.right = "0px";
         document.body.appendChild(this.renderer.domElement);
 
         // Start to render
