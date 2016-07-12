@@ -1,4 +1,5 @@
 import THREE from "three";
+import _ from "underscore";
 
 class Typewriter {
     constructor(opts) {
@@ -42,12 +43,20 @@ class Typewriter {
         this.progress = 0;
 
         this.speed = opts.speed || 200;
+
+        this.after = opts.after;
     }
 
     type_more(portion, cursor_visible) {
         // Add one more letter
         if (portion > this.text.length) {
             portion = this.text.length;
+
+            // Notify that the animation has ended
+            if (_.isFunction(this.after)) {
+                this.after();
+                delete this.after;
+            }
         }
 
         // Cleanup old mesh

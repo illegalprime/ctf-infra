@@ -2,7 +2,7 @@ import Cube from "./cube.js";
 import Renderer from "./renderer.js";
 import Typewriter from "./typewriter.js";
 import GlitchPass from "../lib/postprocessing/GlitchPass.js";
-import * as ComicSans from "../assets/fonts/comic_sans_regular.json";
+import * as OxygenMono from "../assets/fonts/oxygen_mono_regular.json";
 import THREE from "three";
 
 window.onload = () => {
@@ -14,6 +14,7 @@ window.onload = () => {
             near: 0.1,
             far: 1500,
         },
+        antialias: true,
         debug: true,
     });
 
@@ -22,12 +23,12 @@ window.onload = () => {
     engine.render();
 
     const text = new Typewriter({
-        text: "Sample Text",
-        font: ComicSans,
-        size: 70,
-        height: 20,
+        text: "Capture the Flag (Y/n)? ",
+        font: OxygenMono,
+        size: 20,
+        height: 0,
         curveSegments: 4,
-        speed: 5,
+        speed: 4,
         color: {
             font: 0x00ff00,
             font_side: 0x009900,
@@ -35,6 +36,10 @@ window.onload = () => {
         cursor: {
             text: "_",
             speed: 20,
+        },
+        after: () => {
+            // Add glitch effect
+            console.log("Animation Finished");
         },
     });
 
