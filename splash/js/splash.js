@@ -2,6 +2,8 @@ import Cube from "./cube.js";
 import Renderer from "./renderer.js";
 import Typewriter from "./typewriter.js";
 import GlitchPass from "../lib/postprocessing/GlitchPass.js";
+import DotScreenShader from "../lib/shaders/DotScreenShader.js";
+import ShaderPass from "../lib/postprocessing/ShaderPass.js";
 import * as OxygenMono from "../assets/fonts/oxygen_mono_regular.json";
 import THREE from "three";
 
@@ -56,6 +58,9 @@ window.onload = () => {
     text.mesh.rotation.y = Math.PI * 2;
 
     engine.add(text);
+
+    const dotScreenPass = new ShaderPass(DotScreenShader);
+    engine.composer.addPass(dotScreenPass);
 
     const glitchPass = new GlitchPass();
     glitchPass.renderToScreen = true;
