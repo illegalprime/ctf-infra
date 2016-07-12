@@ -76,16 +76,21 @@ class Typewriter {
     }
 
     update(global) {
+        let filthy = false;
         if (this.progress == 0) {
             this.start_time = global.ticks;
         }
         if ((global.ticks - this.start_time) % this.cursor.speed == 0) {
             this.cursor_visible = !this.cursor_visible;
+            filthy = true;
         }
         if ((global.ticks - this.start_time) % this.speed == 0) {
             this.progress += 1;
+            filthy = true;
         }
-        this.type_more(this.progress, this.cursor_visible);
+        if (filthy) {
+            this.type_more(this.progress, this.cursor_visible);
+        }
     }
 }
 
